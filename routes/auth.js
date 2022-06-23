@@ -1,6 +1,7 @@
 import express from "express";
 import passport from "passport";
 import ('../controllers/auth.js')
+import { decryptToken } from "../utils/decryptToken.js";
 const router = express.Router()
 
 
@@ -15,7 +16,8 @@ router.get('/google', passport.authenticate('google',
       res.status(200).json({'apikey': req.user['apikey']})
     }
     else{
-      res.status(200).json(req.user)
+      // get api key of the existing user & decrypt it
+      res.status(200).json({"apiKey": decryptToken(req.user['apiKey'])})
     }
   });
 
